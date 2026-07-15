@@ -523,6 +523,26 @@
   }
   .history-log-btn:hover{ border-color:var(--brass); color:var(--brass-bright); }
 
+  #authModalBtn{
+    position:fixed;
+    top:16px;
+    right:16px;
+    z-index:60;
+    background:#E07B39;
+    border-color:#E07B39;
+    color:#1a140d;
+    font-weight:600;
+  }
+  #authModalBtn:hover{ background:#EF8F52; border-color:#EF8F52; color:#1a140d; }
+
+  #getPremiumBtn{
+    background:#C0392B;
+    border-color:#C0392B;
+    color:var(--parchment);
+    font-weight:600;
+  }
+  #getPremiumBtn:hover{ background:#D9483A; border-color:#D9483A; color:var(--parchment); }
+
   .modal-overlay{
     display:none;
     position:fixed;
@@ -3818,10 +3838,7 @@ function shareResult(){
 }
 
 function shareTodayCase(){
-  const brand = mode === "justicedle" ? "JUSTICEdle" : mode === "doctrinedle" ? "DOCTRINEdle" : "SCOTUSdle";
-  const docket = document.getElementById("docketNo").textContent;
-  const label = mode === "daily" ? brand : `${brand} — ${topicLabel(mode)}`;
-  const text = `Can you guess today's case? ${label}\n${docket}\n${window.location.href}`;
+  const text = "https://scotusdle.com";
   navigator.clipboard?.writeText(text).then(()=>{
     const btn = document.getElementById("shareTodayBtn");
     if(btn){ const old = btn.textContent; btn.textContent = "Copied!"; setTimeout(()=>btn.textContent=old, 1400); }
