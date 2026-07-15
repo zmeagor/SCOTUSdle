@@ -107,8 +107,10 @@
 
   .topic-dropdown-wrap{ position:relative; }
   #changeTopicBtn{ border-left:1px solid var(--hairline); white-space:nowrap; }
-  #changeTopicBtn:not(.active){ color:var(--brass); background:rgba(184,147,91,0.12); }
-  #changeTopicBtn:not(.active):hover{ color:var(--brass-bright); background:rgba(184,147,91,0.2); }
+  #changeTopicBtn:not(.active),
+  #changeGamemodeBtn:not(.active){ color:var(--brass); background:rgba(184,147,91,0.12); }
+  #changeTopicBtn:not(.active):hover,
+  #changeGamemodeBtn:not(.active):hover{ color:var(--brass-bright); background:rgba(184,147,91,0.2); }
   #changeGamemodeBtn{ border-radius:0 2px 2px 0; border-left:1px solid var(--hairline); white-space:nowrap; }
   .topic-dropdown{
     display:none;
