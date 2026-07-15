@@ -3509,6 +3509,11 @@ function startGame(newMode, targetDay, forcedCase){
     mode==="tortsdle" ? 'TORTS<em>dle</em>' :
     'SCOTUS<em>dle</em>';
 
+  document.getElementById("guessInput").placeholder =
+    mode==="justicedle" ? "Type a Justice's name…" :
+    mode==="doctrinedle" ? "Type a legal concept…" :
+    "Type a case name…";
+
   const n = maxClues();
   let taglineText;
   if(mode === "justicedle"){
