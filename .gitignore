@@ -6,3 +6,5 @@ scotusdle (v.7).html
 scotusdle.html
 Webpage/
 supabase/.temp/
+*.txt
+*API*key*
