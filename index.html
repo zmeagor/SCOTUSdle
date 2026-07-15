@@ -3838,7 +3838,7 @@ function shareResult(){
 }
 
 function shareTodayCase(){
-  const text = "https://scotusdle.com";
+  const text = "Can you beat today's case? Play on scotusdle.com!";
   navigator.clipboard?.writeText(text).then(()=>{
     const btn = document.getElementById("shareTodayBtn");
     if(btn){ const old = btn.textContent; btn.textContent = "Copied!"; setTimeout(()=>btn.textContent=old, 1400); }
