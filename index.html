@@ -540,6 +540,44 @@
   }
   #authModalBtn:hover{ background:#EF8F52; border-color:#EF8F52; color:#1a140d; }
 
+  .hamburger-wrap{ position:fixed; top:16px; left:16px; z-index:60; }
+  #hamburgerBtn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:16px;
+    background:none;
+    border:1px solid var(--hairline);
+    color:var(--parchment-dim);
+    padding:8px 14px;
+    border-radius:3px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  #hamburgerBtn:hover{ border-color:var(--brass); color:var(--brass-bright); }
+  .hamburger-dropdown{
+    display:none;
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0;
+    background:var(--surface);
+    border:1px solid var(--hairline);
+    border-radius:4px;
+    min-width:180px;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,0.6);
+    z-index:61;
+  }
+  .hamburger-dropdown.show{ display:block; }
+  .hamburger-item{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    color:var(--parchment);
+    padding:11px 16px;
+    cursor:pointer;
+    transition:background .12s ease;
+  }
+  .hamburger-item:hover{ background:rgba(184,147,91,0.12); color:var(--brass-bright); }
+  .hamburger-item:not(:last-child){ border-bottom:1px solid var(--hairline); }
+
   #getPremiumBtn{
     background:#C0392B;
     border-color:#C0392B;
@@ -852,6 +890,14 @@
 </style>
 </head>
 <body>
+<div class="hamburger-wrap">
+  <button id="hamburgerBtn">☰</button>
+  <div class="hamburger-dropdown" id="hamburgerDropdown">
+    <div class="hamburger-item" id="aboutMenuItem">About</div>
+    <div class="hamburger-item" id="developerMenuItem">Meet the Developer</div>
+  </div>
+</div>
+
 <div class="wrap">
   <div class="eyebrow" id="docketNo">DOCKET NO. —</div>
   <h1 class="wordmark" id="wordmark">SCOTUS<em>dle</em></h1>
@@ -937,6 +983,32 @@
       <button class="modal-close" id="statsModalClose">✕</button>
     </div>
     <div class="modal-body" id="statsModalBody"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="aboutModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>About SCOTUSdle</h2>
+      <button class="modal-close" id="aboutModalClose">✕</button>
+    </div>
+    <div class="modal-body">
+      <p>SCOTUSdle is a daily guessing game for landmark Supreme Court cases — figure out the case from four exhibits, with one revealed at a time. It also includes Justicedle (guess the justice from a quote), Doctrinedle (guess the legal doctrine), and topic modes covering Property, Corporate, Criminal, and Torts law.</p>
+      <p>It's meant as a study aid and a bit of daily trivia fun for law students and legal enthusiasts alike — not legal advice, and clues are AI-generated, so always double check anything you plan to cite.</p>
+      <p>Questions or feedback? Reach out at <a href="mailto:scotusdle.help@gmail.com">scotusdle.help@gmail.com</a>.</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="developerModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>Meet the Developer</h2>
+      <button class="modal-close" id="developerModalClose">✕</button>
+    </div>
+    <div class="modal-body" id="developerModalBody">
+      <p>This section is a placeholder — let me know what you'd like it to say (your name, a short bio, any links you want included) and I'll fill it in.</p>
+    </div>
   </div>
 </div>
 
@@ -4373,6 +4445,27 @@ function closeStatsModal(){
   document.getElementById("statsModal").classList.remove("show");
 }
 
+function toggleHamburgerDropdown(){
+  document.getElementById("hamburgerDropdown").classList.toggle("show");
+}
+function closeHamburgerDropdown(){
+  document.getElementById("hamburgerDropdown").classList.remove("show");
+}
+function openAboutModal(){
+  closeHamburgerDropdown();
+  document.getElementById("aboutModal").classList.add("show");
+}
+function closeAboutModal(){
+  document.getElementById("aboutModal").classList.remove("show");
+}
+function openDeveloperModal(){
+  closeHamburgerDropdown();
+  document.getElementById("developerModal").classList.add("show");
+}
+function closeDeveloperModal(){
+  document.getElementById("developerModal").classList.remove("show");
+}
+
 function renderUsageIndicator(){
   const el = document.getElementById("usageIndicator");
   const stars = [];
@@ -4484,6 +4577,23 @@ document.getElementById("archiveModal").addEventListener("click", (e) => {
   if(e.target.id === "archiveModal") closeArchiveModal();
 });
 document.getElementById("statsModalBtn").addEventListener("click", openStatsModal);
+document.getElementById("hamburgerBtn").addEventListener("click", (e) => {
+  e.stopPropagation();
+  toggleHamburgerDropdown();
+});
+document.getElementById("aboutMenuItem").addEventListener("click", openAboutModal);
+document.getElementById("developerMenuItem").addEventListener("click", openDeveloperModal);
+document.getElementById("aboutModalClose").addEventListener("click", closeAboutModal);
+document.getElementById("aboutModal").addEventListener("click", (e) => {
+  if(e.target.id === "aboutModal") closeAboutModal();
+});
+document.getElementById("developerModalClose").addEventListener("click", closeDeveloperModal);
+document.getElementById("developerModal").addEventListener("click", (e) => {
+  if(e.target.id === "developerModal") closeDeveloperModal();
+});
+document.addEventListener("click", (e) => {
+  if(!e.target.closest(".hamburger-wrap")) closeHamburgerDropdown();
+});
 document.getElementById("getPremiumBtn").addEventListener("click", () => openPaywallModal("premium"));
 async function openBillingPortal(triggerEl){
   const originalText = triggerEl.textContent;
@@ -4517,6 +4627,9 @@ document.addEventListener("keydown", (e) => {
     closePaywallModal();
     closeAuthModal();
     closeTopicDropdown();
+    closeAboutModal();
+    closeDeveloperModal();
+    closeHamburgerDropdown();
   }
 });
 
