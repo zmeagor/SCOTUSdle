@@ -540,6 +540,30 @@
   }
   #authModalBtn:hover{ background:#EF8F52; border-color:#EF8F52; color:#1a140d; }
 
+  .copy-toast{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(12px);
+    background:var(--surface-raised);
+    border:1px solid var(--brass);
+    color:var(--parchment);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.04em;
+    padding:10px 18px;
+    border-radius:4px;
+    box-shadow:0 12px 30px -10px rgba(0,0,0,0.6);
+    z-index:200;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+  .copy-toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
   .hamburger-wrap{ position:fixed; top:16px; left:16px; z-index:60; }
   #hamburgerBtn{
     font-family:'IBM Plex Mono',monospace;
@@ -892,6 +916,7 @@
 </style>
 </head>
 <body>
+<div class="copy-toast" id="copyToast">Copied!</div>
 <div class="hamburger-wrap">
   <button id="hamburgerBtn">☰</button>
   <div class="hamburger-dropdown" id="hamburgerDropdown">
@@ -4157,11 +4182,19 @@ function shareResult(){
   }).catch(()=>{});
 }
 
+let copyToastTimeout = null;
+function showCopyToast(){
+  const toast = document.getElementById("copyToast");
+  if(!toast) return;
+  toast.classList.add("show");
+  clearTimeout(copyToastTimeout);
+  copyToastTimeout = setTimeout(() => toast.classList.remove("show"), 1600);
+}
+
 function shareTodayCase(){
   const text = "Can you beat today's case? Play on scotusdle.com!";
   navigator.clipboard?.writeText(text).then(()=>{
-    const btn = document.getElementById("shareTodayBtn");
-    if(btn){ const old = btn.textContent; btn.textContent = "Copied!"; setTimeout(()=>btn.textContent=old, 1400); }
+    showCopyToast();
   }).catch(()=>{});
 }
 
